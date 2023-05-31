@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-
+"""
 class VGG_FeatureExtractor(nn.Module):
     """ FeatureExtractor of CRNN (https://arxiv.org/pdf/1507.05717.pdf) """
     def __init__(self, input_channel, output_channel=512):
@@ -29,8 +29,8 @@ class VGG_FeatureExtractor(nn.Module):
             nn.Dropout(p=0.3))
     def forward(self, input):
         return self.ConvNet(input)
-
 """
+
 class VGG_FeatureExtractor(nn.Module):
     def __init__(self, input_channel, output_channel=512):
         super(VGG_FeatureExtractor, self).__init__()
@@ -62,7 +62,6 @@ class VGG_FeatureExtractor(nn.Module):
 
     def forward(self, input):
         return self.ConvNet(input)
-"""
 
 
 class RCNN_FeatureExtractor(nn.Module):
