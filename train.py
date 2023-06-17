@@ -47,7 +47,7 @@ from test import validation
 import utils
 device = utils.device
 
-def train(config, opt=opt):
+def train(config):
     with wandb.init(config=config):
         config = wandb.config
 
