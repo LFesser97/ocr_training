@@ -386,4 +386,4 @@ if __name__ == '__main__':
         """
 
     # call train using weights and biases
-    wandb.agent(sweep_id, train, count=5)
+    wandb.agent(sweep_id, train, count=1)
