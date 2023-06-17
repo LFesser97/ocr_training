@@ -17,7 +17,7 @@ limitations under the License.
 import torch.nn as nn
 
 from modules.transformation import TPS_SpatialTransformerNetwork
-from modules.feature_extraction import VGG_FeatureExtractor, RCNN_FeatureExtractor, ResNet_FeatureExtractor
+from modules.feature_extraction import VGG_FeatureExtractor_4, VGG_FeatureExtractor_5, VGG_FeatureExtractor_6, VGG_FeatureExtractor_7, RCNN_FeatureExtractor, ResNet_FeatureExtractor
 from modules.sequence_modeling import BidirectionalLSTM, LSTM
 from modules.prediction import Attention
 
@@ -38,8 +38,14 @@ class Model(nn.Module):
             print('No Transformation module specified')
 
         """ FeatureExtraction """
-        if opt.FeatureExtraction == 'VGG':
-            self.FeatureExtraction = VGG_FeatureExtractor(opt.input_channel, opt.output_channel)
+        if opt.FeatureExtraction == 'VGG_4':
+            self.FeatureExtraction = VGG_FeatureExtractor_4(opt.input_channel, opt.output_channel)
+        elif opt.FeatureExtraction == 'VGG_5':
+            self.FeatureExtraction = VGG_FeatureExtractor_5(opt.input_channel, opt.output_channel)
+        elif opt.FeatureExtraction == 'VGG_6':
+            self.FeatureExtraction = VGG_FeatureExtractor_6(opt.input_channel, opt.output_channel)
+        elif opt.FeatureExtraction == 'VGG_7':
+            self.FeatureExtraction = VGG_FeatureExtractor_7(opt.input_channel, opt.output_channel)
         elif opt.FeatureExtraction == 'RCNN':
             self.FeatureExtraction = RCNN_FeatureExtractor(opt.input_channel, opt.output_channel)
         elif opt.FeatureExtraction == 'ResNet':
