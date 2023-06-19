@@ -28,10 +28,10 @@ parameters_dict = {
           'values': [4, 5, 6, 7]
         },
     'hidden_size': {
-            'values': [32, 64, 128]
+            'values': [64, 128, 256]
             },
     'output_size': {
-            'values': [32, 64, 128]
+            'values': [64, 128, 256]
             },
     }
 
