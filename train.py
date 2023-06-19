@@ -340,7 +340,7 @@ if __name__ == '__main__':
     opt.Prediction = 'CTC'
 
     opt.adam=True
-    opt.lr=0.05 # used to be 0.001
+    opt.lr=0.001
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
     opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
