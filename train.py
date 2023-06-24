@@ -337,7 +337,7 @@ if __name__ == '__main__':
     opt.Transformation = 'None'
     # opt.FeatureExtraction = 'VGG'
     opt.SequenceModeling = 'LSTM'
-    opt.Prediction = 'CTC'
+    opt.Prediction = 'Attn'
 
     opt.adam=True
     opt.lr=0.001
