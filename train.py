@@ -25,13 +25,13 @@ parameters_dict = {
         'values': ['adam']
         },
     'depth': {
-          'values': [6]
+          'values': [6, 7]
         },
     'hidden_size': {
-            'values': [32]
+            'values': [32, 64]
             },
     'output_size': {
-            'values': [128]
+            'values': [64, 128, 256]
             },
     }
 
