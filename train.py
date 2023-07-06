@@ -24,6 +24,9 @@ parameters_dict = {
     'optimizer': {
         'values': ['adam']
         },
+    'lr': {
+        'values': [0.01]
+        },
     'depth': {
           'values': [7]
         },
@@ -62,6 +65,7 @@ def train(config=None):
 
         opt.hidden_size = config.hidden_size
         opt.output_size = config.output_size
+        opt.lr = config.lr
         
         """ dataset preparation """
         if not opt.data_filtering_off:
@@ -339,8 +343,7 @@ if __name__ == '__main__':
     opt.SequenceModeling = 'LSTM'
     opt.Prediction = 'Attn'
 
-    opt.adam=False # used to be true
-    opt.lr=0.001
+    opt.adam=True
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
     opt.character="0123456789abcdefghijklmnopqrstuvwxyz"
