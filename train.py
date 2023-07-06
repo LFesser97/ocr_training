@@ -22,10 +22,10 @@ sweep_config = {
 
 parameters_dict = {
     'optimizer': {
-        'values': ['adam']
+        'values': ['adadelta']
         },
     'lr': {
-        'values': [0.01]
+        'values': [1]
         },
     'depth': {
           'values': [7]
@@ -66,6 +66,11 @@ def train(config=None):
         opt.hidden_size = config.hidden_size
         opt.output_size = config.output_size
         opt.lr = config.lr
+
+        if config.optimizer == "adam":
+            opt.adam=True
+        else:
+            opt.adam=False
         
         """ dataset preparation """
         if not opt.data_filtering_off:
@@ -343,7 +348,6 @@ if __name__ == '__main__':
     opt.SequenceModeling = 'LSTM'
     opt.Prediction = 'Attn'
 
-    opt.adam=True
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
     opt.character="0123456789abcdefghijklmnopqrstuvwxyz"
