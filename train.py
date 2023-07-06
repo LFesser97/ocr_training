@@ -339,7 +339,7 @@ if __name__ == '__main__':
     opt.SequenceModeling = 'LSTM'
     opt.Prediction = 'Attn'
 
-    opt.adam=True
+    opt.adam=False # used to be true
     opt.lr=0.001
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
