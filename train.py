@@ -22,10 +22,10 @@ sweep_config = {
 
 parameters_dict = {
     'optimizer': {
-        'values': ['adadelta']
+        'values': ['adam']
         },
     'lr': {
-        'values': [1]
+        'values': [0.001]
         },
     'depth': {
           'values': [7]
