@@ -13,6 +13,15 @@ import torch.optim as optim
 import torch.utils.data
 import numpy as np
 
+from utils import CTCLabelConverter, CTCLabelConverterForBaiduWarpctc, AttnLabelConverter, Averager, TokenLabelConverter
+from dataset import hierarchical_dataset, AlignCollate, Batch_Balanced_Dataset, RawDataset
+from model import Model
+from test import validation
+from utils import get_args
+
+from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR, MultiStepLR, ReduceLROnPlateau
+
+
 # weights and biases setup
 import wandb
 wandb.login()
@@ -43,11 +52,6 @@ sweep_config['parameters'] = parameters_dict
 
 sweep_id = wandb.sweep(sweep_config, project="robust_ocr")
 
-
-from utils import CTCLabelConverter, CTCLabelConverterForBaiduWarpctc, AttnLabelConverter, Averager
-from dataset import hierarchical_dataset, AlignCollate, Batch_Balanced_Dataset, RawDataset
-from model import Model
-from test import validation
 
 import utils
 device = utils.device
@@ -104,7 +108,9 @@ def train(config=None):
         log.close()
         
         """ model configuration """
-        if 'CTC' in opt.Prediction:
+        if opt.Transformer:
+            converter = TokenLabelConverter(opt)
+        elif 'CTC' in opt.Prediction:
             if opt.baiduCTC:
                 converter = CTCLabelConverterForBaiduWarpctc(opt.character)
             else:
@@ -112,6 +118,7 @@ def train(config=None):
         else:
             converter = AttnLabelConverter(opt.character)
         opt.num_class = len(converter.character)
+
 
         if opt.rgb:
             opt.input_channel = 3
@@ -121,19 +128,20 @@ def train(config=None):
             opt.SequenceModeling, opt.Prediction)
 
         # weight initialization
-        for name, param in model.named_parameters():
-            if 'localization_fc2' in name:
-                print(f'Skip {name} as it is already initialized')
-                continue
-            try:
-                if 'bias' in name:
-                    init.constant_(param, 0.0)
-                elif 'weight' in name:
-                    init.kaiming_normal_(param)
-            except Exception as e:  # for batchnorm.
-                if 'weight' in name:
-                    param.data.fill_(1)
-                continue
+        if not opt.Transformer:
+            for name, param in model.named_parameters():
+                if 'localization_fc2' in name:
+                    print(f'Skip {name} as it is already initialized')
+                    continue
+                try:
+                    if 'bias' in name:
+                        init.constant_(param, 0.0)
+                    elif 'weight' in name:
+                        init.kaiming_normal_(param)
+                except Exception as e:  # for batchnorm.
+                    if 'weight' in name:
+                        param.data.fill_(1)
+                    continue
 
         # data parallel for multi-GPU
         # model = torch.nn.DataParallel(model,device_ids=[0,1,2]).to(device)
@@ -220,6 +228,11 @@ def train(config=None):
                     else:
                         preds = preds.log_softmax(2).permute(1, 0, 2)
                         cost = criterion(preds, text, preds_size, length)
+                        
+                elif opt.Transformer:
+                    target = converter.encode(labels)
+                    preds = model(image, text=target, seqlen=converter.batch_max_length)
+                    cost = criterion(preds.view(-1, preds.shape[-1]), target.contiguous().view(-1))
 
                 else:
                     preds = model(image, text[:, :-1])  # align with Attention.forward
@@ -291,6 +304,8 @@ def train(config=None):
             iteration += 1
 
 
+### NEED TO ADJUST THIS PART
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -349,16 +364,21 @@ if __name__ == '__main__':
     # opt.FeatureExtraction = 'VGG'
     opt.SequenceModeling = 'LSTM'
     opt.Prediction = 'Attn'
+    opt.Transformer = True
 
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
     opt.character="0123456789abcdefghijklmnopqrstuvwxyz"
     # used to be opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    if not opt.exp_name:
-        opt.exp_name = f'{opt.Transformation}-{opt.FeatureExtraction}-{opt.SequenceModeling}-{opt.Prediction}'
-        opt.exp_name += f'-Seed{opt.manualSeed}'
-        # print(opt.exp_name)
+    if not opt.Transformer:
+        if not opt.exp_name:
+            opt.exp_name = f'{opt.Transformation}-{opt.FeatureExtraction}-{opt.SequenceModeling}-{opt.Prediction}'
+            opt.exp_name += f'-Seed{opt.manualSeed}'
+            # print(opt.exp_name)
+
+    else:
+        opt.exp_name = f'Transformer'
 
     os.makedirs(f'./saved_models/{opt.exp_name}', exist_ok=True)
         
