@@ -37,13 +37,13 @@ parameters_dict = {
         'values': [0.001]
         },
     'depth': {
-          'values': [7]
+          'values': [6]
         },
     'hidden_size': {
-            'values': [64]
+            'values': [32]
             },
     'output_size': {
-            'values': [256]
+            'values': [128]
             },
     }
 
@@ -362,8 +362,8 @@ if __name__ == '__main__':
     opt.Transformation = 'None'
     # opt.FeatureExtraction = 'VGG'
     opt.SequenceModeling = 'LSTM'
-    opt.Prediction = 'Attn'
-    opt.Transformer = True
+    opt.Prediction = 'CTC'
+    opt.Transformer = False
 
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
@@ -383,8 +383,8 @@ if __name__ == '__main__':
         
     """ vocab / character number configuration """
     if opt.sensitive:
-        # opt.character += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        opt.character = string.printable[:-6]  # same with ASTER setting (use 94 char).
+        opt.character += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        # opt.character = string.printable[:-6]  # same with ASTER setting (use 94 char).
 
     """ Seed and GPU setting """
     # print("Random Seed: ", opt.manualSeed)
