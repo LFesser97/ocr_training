@@ -14,12 +14,13 @@ import torch.utils.data
 import numpy as np
 
 from utils import CTCLabelConverter, CTCLabelConverterForBaiduWarpctc, AttnLabelConverter, Averager, TokenLabelConverter
-from dataset import hierarchical_dataset, AlignCollate, Batch_Balanced_Dataset
+from dataset import hierarchical_dataset, AlignCollate, Batch_Balanced_Dataset, RawDataset
 from model import Model
 from test import validation
 
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR, MultiStepLR, ReduceLROnPlateau
 
+import utils
 
 # weights and biases setup
 import wandb
