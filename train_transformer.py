@@ -333,6 +333,8 @@ if __name__ == '__main__':
     parser.add_argument('--output_channel', type=int, default=64,
                         help='the number of output channel of Feature extractor')
     parser.add_argument('--hidden_size', type=int, default=64, help='the size of the LSTM hidden state')
+    
+    choices = ["vitstr_tiny_patch16_224", "vitstr_small_patch16_224", "vitstr_base_patch16_224", "vitstr_tiny_distilled_patch16_224", "vitstr_small_distilled_patch16_224"]
     parser.add_argument('--Transformer', action='store_true', help='Use end-to-end transformer')
     parser.add_argument('--TransformerModel', default=choices[0], help='Which vit/deit transformer model', choices=choices)
 
