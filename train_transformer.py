@@ -54,26 +54,28 @@ def train(config=None):
             print('Filtering the images whose label is longer than opt.batch_max_length')
             # see https://github.com/clovaai/deep-text-recognition-benchmark/blob/6593928855fb7abb999a99f428b3e4477d4ae356/dataset.py#L130
 
-        opt.select_data = opt.select_data.split('-')
-        opt.batch_ratio = opt.batch_ratio.split('-')
-        opt.eval = False
-        train_dataset = Batch_Balanced_Dataset(opt)
+    opt.select_data = opt.select_data.split('-')
+    opt.batch_ratio = opt.batch_ratio.split('-')
+    train_dataset = RawDataset(root=opt.train_data,opt=opt)
+    AlignCollate_train=AlignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio_with_pad=opt.PAD)
+    train_loader = torch.utils.data.DataLoader(
+        train_dataset, batch_size=opt.batch_size,
+        shuffle=True,  # 'True' to check training progress with validation function.
+        num_workers=int(opt.workers),
+        collate_fn=AlignCollate_train, pin_memory=True)
 
-        log = open(f'./saved_models/{opt.exp_name}/log_dataset.txt', 'a')
-        opt.eval = True
-        if opt.sensitive:
-            opt.data_filtering_off = True
-        AlignCollate_valid = AlignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio_with_pad=opt.PAD, opt=opt)
-        valid_dataset, valid_dataset_log = hierarchical_dataset(root=opt.valid_data, opt=opt)
-        valid_loader = torch.utils.data.DataLoader(
-            valid_dataset, batch_size=opt.batch_size,
-            shuffle=True,  # 'True' to check training progress with validation function.
-            num_workers=int(opt.workers),
-            collate_fn=AlignCollate_valid, pin_memory=True)
-        log.write(valid_dataset_log)
-        print('-' * 80)
-        log.write('-' * 80 + '\n')
-        log.close()
+
+    log = open(f'./saved_models/{opt.exp_name}/log_dataset.txt', 'a')
+    AlignCollate_valid = AlignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio_with_pad=opt.PAD)
+    valid_dataset = RawDataset(root=opt.valid_data, opt=opt)
+    valid_loader = torch.utils.data.DataLoader(
+        valid_dataset, batch_size=opt.batch_size,
+        shuffle=True,  # 'True' to check training progress with validation function.
+        num_workers=int(opt.workers),
+        collate_fn=AlignCollate_valid, pin_memory=True)
+    print('-' * 80)
+    log.write('-' * 80 + '\n')
+    log.close()
         
         """ model configuration """
         if opt.Transformer:
