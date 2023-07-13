@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-dropout_rate = 0.2
+dropout_rate = 0.1
 
 """
 class VGG_FeatureExtractor(nn.Module):
