@@ -364,6 +364,7 @@ if __name__ == '__main__':
     opt.SequenceModeling = 'LSTM'
     opt.Prediction = 'Attn'
     opt.Transformer = False
+    opt.sensitive = True
 
 
     # opt.character="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'.!?,\"&£$€:\\%/@()*+"
