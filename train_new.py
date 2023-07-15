@@ -37,13 +37,13 @@ parameters_dict = {
         'values': [0.001]
         },
     'depth': {
-          'values': [7]
+          'values': [6]
         },
     'hidden_size': {
-            'values': [64]
+            'values': [32]
             },
     'output_size': {
-            'values': [256]
+            'values': [128]
             },
     }
 
@@ -332,7 +332,7 @@ if __name__ == '__main__':
                         help='assign ratio for each selected data in the batch')
     parser.add_argument('--total_data_usage_ratio', type=str, default='1.0',
                         help='total data usage ratio, this ratio is multiplied to total number of data.')
-    parser.add_argument('--batch_max_length', type=int, default=11, help='maximum-label-length')
+    parser.add_argument('--batch_max_length', type=int, default=7, help='maximum-label-length')
     parser.add_argument('--imgH', type=int, default=20, help='the height of the input image')
     parser.add_argument('--imgW', type=int, default=100, help='the width of the input image')
     parser.add_argument('--rgb', action='store_true', help='use rgb input')
@@ -362,7 +362,7 @@ if __name__ == '__main__':
     opt.Transformation = 'None'
     # opt.FeatureExtraction = 'VGG'
     opt.SequenceModeling = 'LSTM'
-    opt.Prediction = 'Attn'
+    opt.Prediction = 'CTC'
     opt.Transformer = False
     opt.sensitive = True
 
