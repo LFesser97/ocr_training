@@ -37,13 +37,13 @@ parameters_dict = {
         'values': [0.001]
         },
     'depth': {
-          'values': [6]
+          'values': [7]
         },
     'hidden_size': {
-            'values': [32]
+            'values': [64]
             },
     'output_size': {
-            'values': [128]
+            'values': [256]
             },
     }
 
@@ -362,7 +362,7 @@ if __name__ == '__main__':
     opt.Transformation = 'None'
     # opt.FeatureExtraction = 'VGG'
     opt.SequenceModeling = 'LSTM'
-    opt.Prediction = 'CTC'
+    opt.Prediction = 'Attn'
     opt.Transformer = False
     opt.sensitive = True
 
