@@ -37,7 +37,7 @@ parameters_dict = {
         'values': [0.001]
         },
     'depth': {
-          'values': [7]
+          'values': [6]
         },
     'hidden_size': {
             'values': [64]
