@@ -42,20 +42,20 @@ class VGG_FeatureExtractor_4(nn.Module):
             nn.Conv2d(input_channel, self.output_channel[1], kernel_size=5, stride=1, padding=0), #16x16x96
             nn.MaxPool2d(2,2),  # 16x8x48
             nn.ReLU(True),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[1], self.output_channel[2], 5, 1, 2), #32x8x48
             nn.MaxPool2d(2,2),  # 32x4x24
             nn.ReLU(True),
             nn.BatchNorm2d(self.output_channel[2], affine=False),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[2], self.output_channel[3], 3, 1, 1), #64x4x24
             nn.MaxPool2d(2, 2),  # 64x2x12
             nn.ReLU(True),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[3], self.output_channel[3], 2, 1, 0),
             nn.ReLU(True),  # hid*1x11
             nn.BatchNorm2d(self.output_channel[3],affine=False),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
         )
 
     def forward(self, input):
@@ -71,23 +71,23 @@ class VGG_FeatureExtractor_5(nn.Module):
             nn.Conv2d(input_channel, self.output_channel[1], kernel_size=5, stride=1, padding=0), #16x16x96
             nn.MaxPool2d(2,2),  # 16x8x48
             nn.ReLU(True),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[1], self.output_channel[2], 5, 1, 2), #32x8x48
             nn.MaxPool2d(2,2),  # 32x4x24
             nn.ReLU(True),
             nn.BatchNorm2d(self.output_channel[2], affine=False),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[2], self.output_channel[3], 3, 1, 1), #64x4x24
             nn.MaxPool2d(2, 2),  # 64x2x12
             nn.ReLU(True),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[3], self.output_channel[3], 3, 1, 1), #64x2x12
             nn.ReLU(True),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[3], self.output_channel[3], 2, 1, 0),
             nn.ReLU(True),  # hid*1x11
             nn.BatchNorm2d(self.output_channel[3],affine=False),
-            nn.Dropout(p=0.2),
+            nn.Dropout(p=dropout_rate),
         )
 
     def forward(self, input):
