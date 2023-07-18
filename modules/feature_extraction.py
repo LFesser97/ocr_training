@@ -49,11 +49,11 @@ class VGG_FeatureExtractor_4(nn.Module):
             nn.BatchNorm2d(self.output_channel[2], affine=False),
             nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[2], self.output_channel[3], 3, 1, 1), #64x4x24
-            nn.MaxPool2d(2, 2),  # 64x2x12
+            nn.MaxPool2d(2, 3),  # 64x2x8 
             nn.ReLU(True),
             nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[3], self.output_channel[3], 2, 1, 0),
-            nn.ReLU(True),  # hid*1x11
+            nn.ReLU(True),  # hid*1*7
             nn.BatchNorm2d(self.output_channel[3],affine=False),
             nn.Dropout(p=dropout_rate),
         )
@@ -78,14 +78,14 @@ class VGG_FeatureExtractor_5(nn.Module):
             nn.BatchNorm2d(self.output_channel[2], affine=False),
             nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[2], self.output_channel[3], 3, 1, 1), #64x4x24
-            nn.MaxPool2d(2, 2),  # 64x2x12
+            nn.MaxPool2d(2, 3),  # 64x2x8
             nn.ReLU(True),
             nn.Dropout(p=dropout_rate),
-            nn.Conv2d(self.output_channel[3], self.output_channel[3], 3, 1, 1), #64x2x12
+            nn.Conv2d(self.output_channel[3], self.output_channel[3], 3, 1, 1), #64x2x8
             nn.ReLU(True),
             nn.Dropout(p=dropout_rate),
             nn.Conv2d(self.output_channel[3], self.output_channel[3], 2, 1, 0),
-            nn.ReLU(True),  # hid*1x11
+            nn.ReLU(True),  # hid*1*7
             nn.BatchNorm2d(self.output_channel[3],affine=False),
             nn.Dropout(p=dropout_rate),
         )
