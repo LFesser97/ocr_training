@@ -53,7 +53,7 @@ class VGG_FeatureExtractor_4(nn.Module):
             nn.Conv2d(self.output_channel[1], self.output_channel[2], kernel_size=3, stride=1, padding=1),  # 16 x 10 x 50
             nn.MaxPool2d(kernel_size=2, stride=2),  # 16 x 5 x 25
             nn.ReLU(True),
-            nn.BatchNorm2d(self.output_channel[1]),
+            nn.BatchNorm2d(self.output_channel[2]),
 
             # the third conv layer
             nn.Conv2d(self.output_channel[2], self.output_channel[3], kernel_size=3, stride=1, padding=1),  # 32 x 5 x 25
