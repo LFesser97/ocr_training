@@ -78,7 +78,7 @@ class VGG_FeatureExtractor_5(nn.Module):
     1 x 20 x 100 and output dimensions 64 x 1 x 7
     """
     def __init__(self, input_channel, output_channel=512):
-        super(VGG_FeatureExtractor_4, self).__init__()
+        super(VGG_FeatureExtractor_5, self).__init__()
         self.output_channel = [int(output_channel / 8), int(output_channel / 4),
                                int(output_channel / 2), output_channel]  # [8, 16, 32, 64]
 
