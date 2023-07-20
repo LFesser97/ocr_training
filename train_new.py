@@ -363,7 +363,7 @@ if __name__ == '__main__':
     # opt.FeatureExtraction = 'VGG'
     opt.SequenceModeling = 'LSTM'
     opt.Prediction = 'Attn'
-    opt.Transformer = False
+    opt.Transformer = True
     opt.sensitive = True
 
 
