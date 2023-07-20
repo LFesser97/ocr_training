@@ -35,7 +35,7 @@ class VGG_FeatureExtractor(nn.Module):
 class VGG_FeatureExtractor_4(nn.Module):
     """
     A 4-layer VGG feature extractor, with input dimensions
-    1 x 20 x 100 and output dimensions 64 x 1 x 7
+    1 x 20 x 100 and output dimensions 64 x 1 x 8
     """
     def __init__(self, input_channel, output_channel=512):
         super(VGG_FeatureExtractor_4, self).__init__()
@@ -44,26 +44,27 @@ class VGG_FeatureExtractor_4(nn.Module):
 
         self.ConvNet = nn.Sequential( # 1 x 20 x 100
             # the first conv layer
-            nn.Conv2d(input_channel, self.output_channel[1], kernel_size=3, stride=1, padding=1),  # 8 x 20 x 100
-            nn.MaxPool2d(kernel_size=2, stride=2),  # 8 x 10 x 50
+            nn.Conv2d(input_channel, self.output_channel[1], kernel_size=5, stride=1, padding=0), #16x16x96
+            nn.MaxPool2d(2,2),  # 16x8x48
             nn.ReLU(True),
             nn.Dropout(p=dropout_rate),
-
+            
             # the second conv layer
-            nn.Conv2d(self.output_channel[1], self.output_channel[2], kernel_size=3, stride=1, padding=1),  # 16 x 10 x 50
-            nn.MaxPool2d(kernel_size=2, stride=2),  # 16 x 5 x 25
+            nn.Conv2d(self.output_channel[1], self.output_channel[2], 5, 1, 2), #32x8x48
+            nn.MaxPool2d(2,2),  # 32x4x24
             nn.ReLU(True),
-            nn.BatchNorm2d(self.output_channel[2]),
+            nn.BatchNorm2d(self.output_channel[2], affine=False),
+            nn.Dropout(p=dropout_rate),
 
             # the third conv layer
-            nn.Conv2d(self.output_channel[2], self.output_channel[3], kernel_size=3, stride=1, padding=1),  # 32 x 5 x 25
-            nn.MaxPool2d(kernel_size=2, stride=2),  # 32 x 2 x 12
+            nn.Conv2d(self.output_channel[2], self.output_channel[3], 3, 1, 1), #64x4x24
+            # reduce to 64x4x16
+            nn.MaxPool2d((2, 1), (2, 1)),  # 64x2x16
             nn.ReLU(True),
-            nn.Dropout(p=dropout_rate),
 
             # the fourth conv layer
-            nn.Conv2d(self.output_channel[3], self.output_channel[3], kernel_size=3, stride=1, padding=1),  # 64 x 2 x 12
-            nn.MaxPool2d(kernel_size=2, stride=2),  # 64 x 1 x 6
+            nn.Conv2d(self.output_channel[3], self.output_channel[3], 3, 1, 1), #64x2x16
+            nn.MaxPool2d(2,2),  # 64x1x8
             nn.ReLU(True),
             nn.Dropout(p=dropout_rate),
         )
